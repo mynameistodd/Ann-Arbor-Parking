@@ -3,15 +3,15 @@ package com.sliverbit.annarborparking;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v14.preference.PreferenceFragment;
 import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
