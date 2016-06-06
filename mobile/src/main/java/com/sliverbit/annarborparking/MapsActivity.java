@@ -4,10 +4,9 @@ import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,7 +27,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,9 +42,7 @@ import org.json.JSONArray;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -61,7 +57,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private RequestQueue queue;
     private Gson gson;
 
-    private List<Location> locations;
+    private HashMap<String, Location> locations;
     private Availability[] availability;
     private HashMap<String, Marker> markerHashMap;
     private IconGenerator iconGenerator;
@@ -97,7 +93,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         queue = Volley.newRequestQueue(this);
         gson = new Gson();
-        locations = new ArrayList<Location>();
+        locations = new HashMap<>();
         markerHashMap = new HashMap<>();
         iconGenerator = new IconGenerator(this);
     }
@@ -123,12 +119,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     while ((line = bufferedReader.readLine()) != null) {
                         Log.d(TAG, line);
                         String[] fields = line.split(",", -1);
-                        locations.add(new Location(fields));
+                        Location location = new Location(fields);
+                        locations.put(location.getLocationCode(), location);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                loadLocations();
+//                loadLocations();
                 refresh();
             }
         }, new Response.ErrorListener() {
@@ -199,21 +196,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         settings.setMyLocationButtonEnabled(true);
         settings.setZoomControlsEnabled(true);
 
-        loadLocations();
+//        loadLocations();
+//        refresh();
     }
 
-    private void loadLocations() {
-        if (mMap == null || locations.size() < 1) return;
-
-        markerHashMap.clear();
-
-        for (Location location : locations) {
-            LatLng lotLatLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
-            Marker locationMarker = mMap.addMarker(new MarkerOptions().position(lotLatLng).title(location.getLocation()));
-
-            markerHashMap.put(location.getLocationCode(), locationMarker);
-        }
-    }
+//    private void loadLocations() {
+//        if (mMap == null || locations.size() < 1) return;
+//
+//        markerHashMap.clear();
+//
+//        for (Location location : locations) {
+//            LatLng lotLatLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
+//            Marker locationMarker = mMap.addMarker(new MarkerOptions().position(lotLatLng).title(location.getLocation()));
+//
+//            markerHashMap.put(location.getLocationCode(), locationMarker);
+//        }
+//    }
 
     private void refresh() {
 
@@ -223,12 +221,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 availability = gson.fromJson(response.toString(), Availability[].class);
                 for (Availability avail : availability) {
-                    Log.d(TAG, avail.getSpacesavailable());
 
-                    Marker locationMarker = markerHashMap.get(avail.getFacility());
-                    if (locationMarker != null) {
+                    Location location = locations.get(avail.getFacility());
+                    if (location != null) {
+
+                        double availSpaces = Double.parseDouble(avail.getSpacesavailable());
+                        double totalSpaces = Double.parseDouble(location.getNumberOfSpaces());
+                        double percentFree = availSpaces / totalSpaces;
+                        Log.d(TAG, "avail:" + availSpaces + " total:" + totalSpaces + " ratio:" + percentFree);
+
+                        //TODO: Make break points configurable
+                        if (percentFree >= .80) {
+                            iconGenerator.setStyle(IconGenerator.STYLE_GREEN);
+                        } else if (percentFree <= .20) {
+                            iconGenerator.setStyle(IconGenerator.STYLE_RED);
+                        } else {
+                            iconGenerator.setStyle(IconGenerator.STYLE_ORANGE);
+                        }
+
                         Bitmap iconBitmap = iconGenerator.makeIcon(avail.getSpacesavailable());
-                        locationMarker.setIcon(BitmapDescriptorFactory.fromBitmap(iconBitmap));
+                        //TODO: Keep track of this marker and reuse on refresh. Adding multiple over and over is bad.
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude())))
+                                .title(location.getLocation())
+                                .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
                     }
                 }
             }
