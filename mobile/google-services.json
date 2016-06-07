@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "167413404167",
+    "firebase_url": "https://learned-vault-124012.firebaseio.com",
+    "project_id": "learned-vault-124012",
+    "storage_bucket": "learned-vault-124012.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167413404167:android:99a89a74c0a6a50b",
+        "android_client_info": {
+          "package_name": "com.sliverbit.annarborparking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167413404167-qmrulss4bgm76boqgiu7m7skd3c942vh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sliverbit.annarborparking",
+            "certificate_hash": "037CCFAE97F43025740D582EED72501314AEDF51"
+          }
+        },
+        {
+          "client_id": "167413404167-9qli02bcvq76ohbfgpihfuni5ga2nvld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLVMQt3Bvcjty7f64ggfQqh8ewoXKTbqA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167413404167-9qli02bcvq76ohbfgpihfuni5ga2nvld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
