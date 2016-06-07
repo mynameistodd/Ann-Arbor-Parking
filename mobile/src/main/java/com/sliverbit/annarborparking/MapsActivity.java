@@ -240,11 +240,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
 
                         Bitmap iconBitmap = iconGenerator.makeIcon(avail.getSpacesavailable());
-                        //TODO: Keep track of this marker and reuse on refresh. Adding multiple over and over is bad.
-                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude())))
-                                .title(location.getLocation())
-                                .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
+                        Marker marker;
+
+                        if (markerHashMap.containsKey(location.getLocationCode())) {
+                            marker = markerHashMap.get(location.getLocationCode());
+                            marker.setIcon(BitmapDescriptorFactory.fromBitmap(iconBitmap));
+                        } else {
+                            marker = mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude())))
+                                    .title(location.getLocation())
+                                    .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
+                            markerHashMap.put(location.getLocationCode(), marker);
+                        }
                     }
                 }
             }
