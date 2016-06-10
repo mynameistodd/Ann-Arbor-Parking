@@ -7,12 +7,15 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -51,6 +54,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG_MAP_FRAGMENT = "mapFragment";
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
 
+    private TextView locationName;
+    //    private TextView locationAvailSpaces;
+    private TextView locationAddress;
+    private TextView locationHandicap;
+    private TextView locationTotalSpaces;
+    private TextView locationNote;
+
+    private BottomSheetBehavior bottomSheetBehavior;
     private GoogleMap mMap;
     private MapFragment mapFragment;
     private GoogleApiClient mGoogleApiClient;
@@ -59,22 +70,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private HashMap<String, Location> locations;
     private Availability[] availability;
-    private HashMap<String, Marker> markerHashMap;
+    private HashMap<String, Marker> locationToMarkerHashMap;
+    private HashMap<String, Location> markerToLocationHashMap;
     private IconGenerator iconGenerator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar2);
         setSupportActionBar(myToolbar);
+
+        View bottomSheet = findViewById(R.id.bottom_sheet);
+        locationName = (TextView) findViewById(R.id.locationName);
+//        locationAvailSpaces = (TextView) findViewById(R.id.locationAvailSpaces);
+        locationAddress = (TextView) findViewById(R.id.locationAddress);
+        locationHandicap = (TextView) findViewById(R.id.locationHandicap);
+        locationTotalSpaces = (TextView) findViewById(R.id.locationTotalSpaces);
+        locationNote = (TextView) findViewById(R.id.locationNote);
 
         if (savedInstanceState == null) {
             mapFragment = MapFragment.newInstance();
 
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, mapFragment, TAG_MAP_FRAGMENT)
+                    .replace(R.id.container2, mapFragment, TAG_MAP_FRAGMENT)
                     .commit();
         } else {
             mapFragment = (MapFragment) getFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
@@ -94,8 +114,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         queue = Volley.newRequestQueue(this);
         gson = new Gson();
         locations = new HashMap<>();
-        markerHashMap = new HashMap<>();
+        locationToMarkerHashMap = new HashMap<>();
+        markerToLocationHashMap = new HashMap<>();
         iconGenerator = new IconGenerator(this);
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+//        bottomSheetBehavior.setPeekHeight(150);
+        bottomSheetBehavior.setHideable(true);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
@@ -188,6 +214,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.setMyLocationEnabled(true);
         }
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                String id = marker.getId();
+                Location location = markerToLocationHashMap.get(id);
+
+                locationName.setText(location.getLocation());
+//                locationAvailSpaces.setText(location.getNumberOfSpaces());
+                locationAddress.setText(location.getAddress());
+                locationHandicap.setText("Handicap Spaces: " + location.getHandicapSpaces());
+                locationTotalSpaces.setText("Total Spaces: " + location.getNumberOfSpaces());
+                locationNote.setText(location.getNote());
+
+                bottomSheetBehavior.setPeekHeight(locationName.getHeight());
+                return true;
+            }
+        });
+
         UiSettings settings = mMap.getUiSettings();
 
         settings.setAllGesturesEnabled(true);
@@ -203,13 +249,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //    private void loadLocations() {
 //        if (mMap == null || locations.size() < 1) return;
 //
-//        markerHashMap.clear();
+//        locationToMarkerHashMap.clear();
 //
 //        for (Location location : locations) {
 //            LatLng lotLatLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
 //            Marker locationMarker = mMap.addMarker(new MarkerOptions().position(lotLatLng).title(location.getLocation()));
 //
-//            markerHashMap.put(location.getLocationCode(), locationMarker);
+//            locationToMarkerHashMap.put(location.getLocationCode(), locationMarker);
 //        }
 //    }
 
@@ -242,15 +288,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Bitmap iconBitmap = iconGenerator.makeIcon(avail.getSpacesavailable());
                         Marker marker;
 
-                        if (markerHashMap.containsKey(location.getLocationCode())) {
-                            marker = markerHashMap.get(location.getLocationCode());
+                        if (locationToMarkerHashMap.containsKey(location.getLocationCode())) {
+                            marker = locationToMarkerHashMap.get(location.getLocationCode());
                             marker.setIcon(BitmapDescriptorFactory.fromBitmap(iconBitmap));
                         } else {
                             marker = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude())))
                                     .title(location.getLocation())
                                     .icon(BitmapDescriptorFactory.fromBitmap(iconBitmap)));
-                            markerHashMap.put(location.getLocationCode(), marker);
+
+                            locationToMarkerHashMap.put(location.getLocationCode(), marker);
+                            markerToLocationHashMap.put(marker.getId(), location);
                         }
                     }
                 }
