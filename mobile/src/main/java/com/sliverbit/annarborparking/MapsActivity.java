@@ -55,10 +55,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
 
     private TextView locationName;
-    //    private TextView locationAvailSpaces;
     private TextView locationAddress;
-    private TextView locationHandicap;
     private TextView locationTotalSpaces;
+    private TextView locationHandicap;
+    private TextView locationWeekend;
+    private TextView locationQuickPay;
+    private TextView locationValidation;
+    private TextView locationHeightRestriction;
+    private TextView locationPublic;
+    private TextView locationMonthly;
+    private TextView locationElectricCharging;
+    private TextView locationBicycle;
+    private TextView locationMoped;
     private TextView locationNote;
 
     private BottomSheetBehavior bottomSheetBehavior;
@@ -79,22 +87,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar2);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        View bottomSheet = findViewById(R.id.bottom_sheet);
+        View bottomSheet = findViewById(R.id.locationDetailBottomSheet);
         locationName = (TextView) findViewById(R.id.locationName);
-//        locationAvailSpaces = (TextView) findViewById(R.id.locationAvailSpaces);
         locationAddress = (TextView) findViewById(R.id.locationAddress);
-        locationHandicap = (TextView) findViewById(R.id.locationHandicap);
         locationTotalSpaces = (TextView) findViewById(R.id.locationTotalSpaces);
+        locationHandicap = (TextView) findViewById(R.id.locationHandicap);
+        locationWeekend = (TextView) findViewById(R.id.locationWeekend);
+        locationQuickPay = (TextView) findViewById(R.id.locationQuickPay);
+        locationValidation = (TextView) findViewById(R.id.locationValidation);
+        locationHeightRestriction = (TextView) findViewById(R.id.locationHeightRestriction);
+        locationPublic = (TextView) findViewById(R.id.locationPublic);
+        locationMonthly = (TextView) findViewById(R.id.locationMonthly);
+        locationElectricCharging = (TextView) findViewById(R.id.locationElectricCharging);
+        locationBicycle = (TextView) findViewById(R.id.locationBicycle);
+        locationMoped = (TextView) findViewById(R.id.locationMoped);
         locationNote = (TextView) findViewById(R.id.locationNote);
 
         if (savedInstanceState == null) {
             mapFragment = MapFragment.newInstance();
 
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container2, mapFragment, TAG_MAP_FRAGMENT)
+                    .replace(R.id.mapContainer, mapFragment, TAG_MAP_FRAGMENT)
                     .commit();
         } else {
             mapFragment = (MapFragment) getFragmentManager().findFragmentByTag(TAG_MAP_FRAGMENT);
@@ -119,7 +135,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         iconGenerator = new IconGenerator(this);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-//        bottomSheetBehavior.setPeekHeight(150);
         bottomSheetBehavior.setHideable(true);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
@@ -184,7 +199,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             case R.id.action_settings:
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.container, new SettingsFragment())
+                        .replace(R.id.mapContainer, new SettingsFragment())
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack(null)
                         .commit();
@@ -223,13 +238,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Location location = markerToLocationHashMap.get(id);
 
                 locationName.setText(location.getLocation());
-//                locationAvailSpaces.setText(location.getNumberOfSpaces());
                 locationAddress.setText(location.getAddress());
-                locationHandicap.setText("Handicap Spaces: " + location.getHandicapSpaces());
-                locationTotalSpaces.setText("Total Spaces: " + location.getNumberOfSpaces());
-                locationNote.setText(location.getNote());
+                locationTotalSpaces.setText(getString(R.string.total_spaces, location.getNumberOfSpaces()));
+                locationHandicap.setText(getString(R.string.handicap_spaces, location.getHandicapSpaces()));
+                locationWeekend.setText(getString(R.string.weekend_parking, location.getEveningsWkndParking()));
+                locationQuickPay.setText(getString(R.string.quick_pay, location.getQuickPay()));
+                locationValidation.setText(getString(R.string.validation, location.getDiscountCouponsAccepted()));
+                locationHeightRestriction.setText(getString(R.string.height_restriction, location.getHgtRestriction()));
+                locationPublic.setText(getString(R.string.public_parking, location.getPublicParking()));
+                locationMonthly.setText(getString(R.string.monthly_parking, location.getMonthlyParking()));
+                locationElectricCharging.setText(getString(R.string.electric_charging, location.geteVCharging()));
+                locationBicycle.setText(getString(R.string.bicycle_parking, location.getBicycleParking()));
+                locationMoped.setText(getString(R.string.moped_parking, location.getMopedParking()));
+                locationNote.setText(getString(R.string.note, location.getNote()));
 
-                bottomSheetBehavior.setPeekHeight(locationName.getHeight());
+                bottomSheetBehavior.setPeekHeight(160);
                 return true;
             }
         });

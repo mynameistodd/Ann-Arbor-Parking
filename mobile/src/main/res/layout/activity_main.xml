@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar2"
+        android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
@@ -14,62 +14,19 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
-        android:id="@+id/container2"
+        android:id="@+id/mapContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />
 
-
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/bottom_sheet"
+        android:id="@+id/locationDetailBottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:background="@android:color/white"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <include layout="@layout/location_details" />
 
-            <TextView
-                android:id="@+id/locationName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:text="Location Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-
-            <!--<TextView-->
-            <!--android:text="Available Spaces"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/locationAvailSpaces" />-->
-
-            <TextView
-                android:id="@+id/locationAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Location Address" />
-
-            <TextView
-                android:id="@+id/locationHandicap"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Handicap Spaces" />
-
-            <TextView
-                android:id="@+id/locationTotalSpaces"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Total Spaces" />
-
-            <TextView
-                android:id="@+id/locationNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Note" />
-
-        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="352dp"
+        android:layout_height="42dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Location Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+
+    <TextView
+        android:id="@+id/locationAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Location Address"
+        app:layout_constraintBottom_toTopOf="@+id/locationTotalSpaces"
+        app:layout_constraintLeft_toLeftOf="@+id/constraintLayout"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1" />
+
+    <TextView
+        android:id="@+id/locationTotalSpaces"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/total_spaces"
+        app:layout_constraintBaseline_toBaselineOf="@+id/locationHandicap"
+        app:layout_constraintLeft_toLeftOf="@+id/locationAddress"
+        app:layout_constraintRight_toLeftOf="@+id/locationHandicap"
+        tools:layout_constraintBaseline_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1" />
+
+    <TextView
+        android:id="@+id/locationHandicap"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="90dp"
+        android:text="@string/handicap_spaces"
+        app:layout_constraintRight_toRightOf="@+id/constraintLayout"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationWeekend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/weekend_parking"
+        app:layout_constraintLeft_toLeftOf="@+id/locationHandicap"
+        app:layout_constraintRight_toRightOf="@+id/locationHandicap"
+        app:layout_constraintTop_toBottomOf="@+id/locationHandicap"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationQuickPay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/quick_pay"
+        app:layout_constraintLeft_toLeftOf="@+id/locationTotalSpaces"
+        app:layout_constraintRight_toRightOf="@+id/locationTotalSpaces"
+        app:layout_constraintTop_toBottomOf="@+id/locationTotalSpaces"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationValidation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/validation"
+        app:layout_constraintLeft_toLeftOf="@+id/locationQuickPay"
+        app:layout_constraintRight_toRightOf="@+id/locationQuickPay"
+        app:layout_constraintTop_toBottomOf="@+id/locationQuickPay"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationHeightRestriction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/height_restriction"
+        app:layout_constraintLeft_toLeftOf="@+id/locationWeekend"
+        app:layout_constraintRight_toRightOf="@+id/locationWeekend"
+        app:layout_constraintTop_toBottomOf="@+id/locationWeekend"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationPublic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/public_parking"
+        app:layout_constraintLeft_toLeftOf="@+id/locationValidation"
+        app:layout_constraintRight_toRightOf="@+id/locationValidation"
+        app:layout_constraintTop_toBottomOf="@+id/locationValidation"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationMonthly"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/monthly_parking"
+        app:layout_constraintLeft_toLeftOf="@+id/locationHeightRestriction"
+        app:layout_constraintRight_toRightOf="@+id/locationHeightRestriction"
+        app:layout_constraintTop_toBottomOf="@+id/locationHeightRestriction"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationElectricCharging"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/electric_charging"
+        app:layout_constraintLeft_toLeftOf="@+id/locationPublic"
+        app:layout_constraintRight_toRightOf="@+id/locationPublic"
+        app:layout_constraintTop_toBottomOf="@+id/locationPublic"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationBicycle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/bicycle_parking"
+        app:layout_constraintLeft_toLeftOf="@+id/locationMonthly"
+        app:layout_constraintRight_toRightOf="@+id/locationMonthly"
+        app:layout_constraintTop_toBottomOf="@+id/locationMonthly"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationMoped"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/moped_parking"
+        app:layout_constraintLeft_toLeftOf="@+id/locationElectricCharging"
+        app:layout_constraintRight_toRightOf="@+id/locationElectricCharging"
+        app:layout_constraintTop_toBottomOf="@+id/locationElectricCharging"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <TextView
+        android:id="@+id/locationNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/note"
+        app:layout_constraintLeft_toLeftOf="@+id/locationMoped"
+        app:layout_constraintTop_toBottomOf="@+id/locationMoped"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+</android.support.constraint.ConstraintLayout>
