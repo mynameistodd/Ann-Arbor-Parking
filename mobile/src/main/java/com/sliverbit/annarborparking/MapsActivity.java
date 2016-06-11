@@ -232,7 +232,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
 
                 String id = marker.getId();
                 Location location = markerToLocationHashMap.get(id);
