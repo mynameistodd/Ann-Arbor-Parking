@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -68,6 +69,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView locationBicycle;
     private TextView locationMoped;
     private TextView locationNote;
+    private ImageView locationImage;
 
     private BottomSheetBehavior bottomSheetBehavior;
     private GoogleMap mMap;
@@ -105,6 +107,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationBicycle = (TextView) findViewById(R.id.locationBicycle);
         locationMoped = (TextView) findViewById(R.id.locationMoped);
         locationNote = (TextView) findViewById(R.id.locationNote);
+        locationImage = (ImageView) findViewById(R.id.locationImage);
 
         if (savedInstanceState == null) {
             mapFragment = MapFragment.newInstance();
@@ -254,6 +257,45 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 locationBicycle.setText(getString(R.string.bicycle_parking, location.getBicycleParking()));
                 locationMoped.setText(getString(R.string.moped_parking, location.getMopedParking()));
                 locationNote.setText(getString(R.string.note, location.getNote()));
+
+                switch (location.getLocationCode()) {
+                    case "80":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_80));
+                        break;
+                    case "81":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_81));
+                        break;
+                    case "82":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_82));
+                        break;
+                    case "83":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_83));
+                        break;
+                    case "84":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_84));
+                        break;
+                    case "85":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_85));
+                        break;
+                    case "86":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_86));
+                        break;
+                    case "87":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_87));
+                        break;
+                    case "88":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_88));
+                        break;
+                    case "89":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_89));
+                        break;
+                    case "95":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_95));
+                        break;
+                    case "96":
+                        locationImage.setImageDrawable(getResources().getDrawable(R.drawable.location_96));
+                        break;
+                }
 
                 bottomSheetBehavior.setPeekHeight(160);
                 return true;
