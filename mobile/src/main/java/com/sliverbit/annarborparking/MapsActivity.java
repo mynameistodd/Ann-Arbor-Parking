@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -55,6 +56,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG_MAP_FRAGMENT = "mapFragment";
     private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 1;
 
+    private View bottomSheet;
     private TextView locationName;
     private TextView locationAddress;
     private TextView locationTotalSpaces;
@@ -92,7 +94,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        View bottomSheet = findViewById(R.id.locationDetailBottomSheet);
+        bottomSheet = findViewById(R.id.locationDetailBottomSheet);
         locationName = (TextView) findViewById(R.id.locationName);
         locationAddress = (TextView) findViewById(R.id.locationAddress);
         locationTotalSpaces = (TextView) findViewById(R.id.locationTotalSpaces);
@@ -169,7 +171,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//                loadLocations();
                 refresh();
             }
         }, new Response.ErrorListener() {
@@ -215,8 +216,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -309,23 +309,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         settings.setMapToolbarEnabled(true);
         settings.setMyLocationButtonEnabled(true);
         settings.setZoomControlsEnabled(true);
-
-//        loadLocations();
-//        refresh();
     }
-
-//    private void loadLocations() {
-//        if (mMap == null || locations.size() < 1) return;
-//
-//        locationToMarkerHashMap.clear();
-//
-//        for (Location location : locations) {
-//            LatLng lotLatLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
-//            Marker locationMarker = mMap.addMarker(new MarkerOptions().position(lotLatLng).title(location.getLocation()));
-//
-//            locationToMarkerHashMap.put(location.getLocationCode(), locationMarker);
-//        }
-//    }
 
     private void refresh() {
 
@@ -375,6 +359,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
+                Snackbar.make(bottomSheet, R.string.error_availability, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.retry, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                refresh();
+                            }
+                        }).show();
             }
         });
 
