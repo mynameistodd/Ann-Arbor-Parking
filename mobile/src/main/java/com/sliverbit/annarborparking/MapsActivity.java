@@ -329,9 +329,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Log.d(TAG, "avail:" + availSpaces + " total:" + totalSpaces + " ratio:" + percentFree);
 
                         //TODO: Make break points configurable
-                        if (percentFree >= .80) {
+                        if (percentFree >= .70) {
                             iconGenerator.setStyle(IconGenerator.STYLE_GREEN);
-                        } else if (percentFree <= .20) {
+                        } else if (percentFree <= .10) {
                             iconGenerator.setStyle(IconGenerator.STYLE_RED);
                         } else {
                             iconGenerator.setStyle(IconGenerator.STYLE_ORANGE);
