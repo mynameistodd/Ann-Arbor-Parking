@@ -1,8 +1,11 @@
 package com.sliverbit.annarborparking.models;
 
+import android.support.annotation.Keep;
+
 /**
  * Created by tdeland on 3/5/16.
  */
+@Keep
 public class Location {
     private String latitude;
     private String longitude;

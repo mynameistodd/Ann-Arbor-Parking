@@ -164,9 +164,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     while ((line = bufferedReader.readLine()) != null) {
                         Log.d(TAG, line);
+
                         String[] fields = line.split(",", -1);
                         Location location = new Location(fields);
                         locations.put(location.getLocationCode(), location);
+
+                        Log.d(TAG, "Location: " + locations.get(location.getLocationCode()).getLocationCode());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -316,9 +319,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         JsonArrayRequest availabilityRequest = new JsonArrayRequest("http://payment.rpsa2.com/LocationAndRate/GetAvailableSpaces", new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
+                Log.i(TAG, "Begin availability response.");
+
+                Log.v(TAG, response.toString());
 
                 availability = gson.fromJson(response.toString(), Availability[].class);
                 for (Availability avail : availability) {
+                    Log.v(TAG, "Availability: " + avail.getFacility());
 
                     Location location = locations.get(avail.getFacility());
                     if (location != null) {
@@ -358,6 +365,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.i(TAG, "Begin availability error response.");
+
                 error.printStackTrace();
                 Snackbar.make(bottomSheet, R.string.error_availability, Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.retry, new View.OnClickListener() {
@@ -369,7 +378,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
+        Log.i(TAG, "Queue availability request.");
         queue.add(availabilityRequest);
     }
 
@@ -394,6 +403,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "Google Play Services Connected!");
         android.location.Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (lastLocation != null && mMap != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 15));
@@ -402,11 +412,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.i(TAG, "Google Play Services Suspended!");
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.i(TAG, "Google Play Services Connection Failed!");
     }
 }

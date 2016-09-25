@@ -1,10 +1,13 @@
 package com.sliverbit.annarborparking.models;
 
+import android.support.annotation.Keep;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by tdeland on 3/5/16.
  */
+@Keep
 public class Availability {
     private String facility;
     @SerializedName("spacesavail")
